@@ -13,22 +13,21 @@ class ButtonWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = getTextColor(text);
-    final double fontSize = Utils.isOperator(text) && text == "=" ? 26 : 22;
+   // final color = getTextColor(text);
+    final double fontSize = Utils.isOperator(text) && text == "=" ? 20 : 22;
     final style = TextStyle(
-        color: color, fontSize: fontSize, fontWeight: FontWeight.bold);
+         fontSize: fontSize, fontWeight: FontWeight.bold);
     return Expanded(
       child: Container(
         height: double.infinity,
-        margin: EdgeInsets.all(10),
+        margin: const EdgeInsets.all(10),
         child: ElevatedButton(
             onPressed: onclicked,
             style: ElevatedButton.styleFrom(
-                primary: Colors.black38,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10))),
             child: text == "<"
-                ? Icon(
+                ? const Icon(
                     Icons.backspace_outlined,
                     color: Colors.white,
                   )
@@ -39,16 +38,16 @@ class ButtonWidget extends StatelessWidget {
       ),
     );
   }
-}
-
-Color getTextColor(String buttonText) {
+  Color getTextColor(String buttonText, ) {
+    bool _isTheme = false;
   switch (buttonText) {
+  
     case "-":
     case "-":
     case "*":
     case "+":
     case "=":
-      return Colors.red;
+      return _isTheme ? Colors.black : Colors.white;
     case "AC":
     case "<":
       return Colors.blue;
@@ -56,3 +55,8 @@ Color getTextColor(String buttonText) {
       return Colors.white;
   }
 }
+}
+
+
+
+
