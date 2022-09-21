@@ -37,7 +37,7 @@ class _MyAppState extends State<MyApp> {
           body: Column(children: [
         
            Expanded(child: buildResult()),
-           Expanded(flex: 2, child: buildButton())
+           Expanded(flex: 2, child: buildButton(_isTheme))
           ]),
         ));
      
@@ -54,7 +54,7 @@ class _MyAppState extends State<MyApp> {
             Text(
               state.equation,
               overflow: TextOverflow.ellipsis,
-              style:  TextStyle( fontSize: 36),
+              style:  const TextStyle( fontSize: 36),
             ),
             const SizedBox(
               height: 24,
@@ -62,7 +62,7 @@ class _MyAppState extends State<MyApp> {
             Text(
               state.result,
               overflow: TextOverflow.ellipsis,
-              style:  TextStyle(
+              style:  const TextStyle(
                fontSize: 18),
             )
           ],
@@ -71,23 +71,24 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
-  Widget buildButton() {
+  Widget buildButton([bool isTheme = false]) {
+    //bool _isTheme = false;
     return Container(
       decoration:  BoxDecoration(
-      color: _isTheme? Colors.grey: Color(0xFF3A3B3C),
-        borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
+      color: _isTheme? Colors.blueGrey.shade100: Colors.blueGrey.shade900,
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(10)),
       ),
       child: Column(children: [
-        buildButtonRow(["AC", "<", "", "/"]),
-        buildButtonRow(["7", "8", "9", "x"]),
-        buildButtonRow(["4", "5", "6", "-"]),
-        buildButtonRow(["1", "2", "3", "+"]),
-        buildButtonRow(["0", ".", "", "="]),
+        buildButtonRow(["AC", "<", "%", "/"], _isTheme),
+        buildButtonRow(["7", "8", "9", "x"], _isTheme),
+        buildButtonRow(["4", "5", "6", "-"], _isTheme),
+        buildButtonRow(["1", "2", "3", "+"], _isTheme),
+        buildButtonRow(["0", ".", "", "="], _isTheme),
       ]),
     );
   }
 
-  Widget buildButtonRow(List<String> row) {
+  Widget buildButtonRow(List<String> row, [bool isTheme = false]) {
     return Consumer(builder: (context, ref, _) {
       final notifier = ref.read(calculatorProvider.notifier);
       return Expanded(
@@ -95,6 +96,7 @@ class _MyAppState extends State<MyApp> {
             children: row
                 .map((text) => ButtonWidget(
                       text: text,
+                      isTheme: isTheme,
                       onclicked: () {
                         if (text == "<") {
                           notifier.delete();

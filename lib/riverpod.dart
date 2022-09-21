@@ -39,7 +39,8 @@ class CalculatorNotifier extends StateNotifier<Calculators> {
 
   void delete() {
     final equation = state.equation;
-    state = state.copy(equation: equation.substring(0, equation.length - 1));
+    state = state.copy(equation: equation.substring(0, equation.length - 1),
+    result: '');
   }
 
   // void equals() {

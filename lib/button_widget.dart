@@ -5,18 +5,21 @@ class ButtonWidget extends StatelessWidget {
   final String text;
   final VoidCallback onclicked;
 
+  final bool isTheme;
+
   const ButtonWidget({
     Key? key,
     required this.text,
     required this.onclicked,
+    this.isTheme = false
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-   // final color = getTextColor(text);
+    final color = getTextColor(text, isTheme);
     final double fontSize = Utils.isOperator(text) && text == "=" ? 20 : 22;
     final style = TextStyle(
-         fontSize: fontSize, fontWeight: FontWeight.bold);
+         fontSize: fontSize, fontWeight: FontWeight.bold,color: color);
     return Expanded(
       child: Container(
         height: double.infinity,
@@ -27,9 +30,9 @@ class ButtonWidget extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10))),
             child: text == "<"
-                ? const Icon(
+                ?  Icon(
                     Icons.backspace_outlined,
-                    color: Colors.white,
+           color:     isTheme ?Colors.green.shade900: Colors.green,
                   )
                 : Text(
                     text,
@@ -38,21 +41,20 @@ class ButtonWidget extends StatelessWidget {
       ),
     );
   }
-  Color getTextColor(String buttonText, ) {
-    bool _isTheme = false;
+  Color getTextColor(String buttonText, bool isTheme) {
   switch (buttonText) {
-  
     case "-":
-    case "-":
-    case "*":
+    case "/":
+    case "x":
     case "+":
     case "=":
-      return _isTheme ? Colors.black : Colors.white;
+    
+      return  isTheme?Colors.red: Colors.red.shade900;
     case "AC":
     case "<":
-      return Colors.blue;
+      return isTheme?Colors.amber:  Colors.amber.shade500;
     default:
-      return Colors.white;
+      return isTheme ?Colors.black: Colors.white;
   }
 }
 }
