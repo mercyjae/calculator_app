@@ -5,8 +5,6 @@ import 'package:math_expressions/math_expressions.dart';
 final calculatorProvider =
     StateNotifierProvider<CalculatorNotifier, Calculators>(
         (ref) => CalculatorNotifier());
-// final themeProvider = StateNotifierProvider<ThemeNotifier, ThemeColor>((ref)
-//  =>ThemeNotifier());
 class CalculatorNotifier extends StateNotifier<Calculators> {
   CalculatorNotifier() : super(Calculators());
   void append(String buttonText) {
@@ -38,16 +36,32 @@ class CalculatorNotifier extends StateNotifier<Calculators> {
   }
 
   void delete() {
-    final equation = state.equation;
-    state = state.copy(equation: equation.substring(0, equation.length - 1),
-    result: '');
+    final equation = state.equation; 
+    if(equation.isNotEmpty){
+      final newEquation =  equation.substring(0, equation.length - 1);
+      if(newEquation.isEmpty){
+        reset();
+      }else{
+      state = state.copy(equation: newEquation);
+      calculate();
+       } }
+    
   }
 
+void reset(){
+  const equation = '0';
+  const result = '0';
+  state = state.copy(equation: equation, result: result);
+}
   void calculate() {
     final expression = state.equation.replaceAll("x", "*").replaceAll("+", "/");
+   try{
     final exp = Parser().parse(expression);
     final model = ContextModel();
     final result = "${exp.evaluate(EvaluationType.REAL, model)}";
     state = state.copy(result: result);
+   }catch(e){
+    print(e);
+   }
   }
 }

@@ -19,29 +19,36 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   bool _isTheme = false;
   @override
-  Widget build(BuildContext context) { 
- return MaterialApp(
-            debugShowCheckedModeBanner: false,
-            title: 'Flutter Demo',
-             theme: _isTheme ? MyTheme.lightTheme :  MyTheme.darkTheme,
-            home: Scaffold( 
+  Widget build(BuildContext context) {
+    return MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: _isTheme ? MyTheme.lightTheme : MyTheme.darkTheme,
+        home: Scaffold(
           appBar: AppBar(
-          title: Center(child: InkWell(onTap: (){
-          setState(() {
-            _isTheme = !_isTheme;
-          });  
-          },
-            child: _isTheme?SvgPicture.asset('assets/icons/sun.svg',color: Colors.black,):
-            SvgPicture.asset('assets/icons/moon.svg',color: Colors.white,))),
-          elevation: 0),
+              title: Center(
+                  child: InkWell(
+                      onTap: () {
+                        setState(() {
+                          _isTheme = !_isTheme;
+                        });
+                      },
+                      child: _isTheme
+                          ? SvgPicture.asset(
+                              'assets/icons/sun.svg',
+                              color: Colors.black,
+                            )
+                          : SvgPicture.asset(
+                              'assets/icons/moon.svg',
+                              color: Colors.white,
+                            ))),
+              elevation: 0),
           body: Column(children: [
-        
-           Expanded(child: buildResult()),
-           Expanded(flex: 2, child: buildButton(_isTheme))
+            Expanded(child: buildResult()),
+            Expanded(flex: 2, child: buildButton(_isTheme))
           ]),
         ));
-     
   }
+
   Widget buildResult() {
     return Consumer(builder: (context, ref, child) {
       final state = ref.watch(calculatorProvider);
@@ -54,7 +61,7 @@ class _MyAppState extends State<MyApp> {
             Text(
               state.equation,
               overflow: TextOverflow.ellipsis,
-              style:  const TextStyle( fontSize: 36),
+              style: const TextStyle(fontSize: 36),
             ),
             const SizedBox(
               height: 24,
@@ -62,8 +69,7 @@ class _MyAppState extends State<MyApp> {
             Text(
               state.result,
               overflow: TextOverflow.ellipsis,
-              style:  const TextStyle(
-               fontSize: 18),
+              style: const TextStyle(fontSize: 18),
             )
           ],
         ),
@@ -72,18 +78,19 @@ class _MyAppState extends State<MyApp> {
   }
 
   Widget buildButton([bool isTheme = false]) {
-    //bool _isTheme = false;
     return Container(
-      decoration:  BoxDecoration(
-      color: _isTheme? Colors.blueGrey.shade100: Colors.blueGrey.shade900,
+      decoration: BoxDecoration(
+        color: _isTheme
+            ? Colors.blueGrey.shade100
+            : const Color.fromARGB(255, 23, 26, 27),
         borderRadius: const BorderRadius.vertical(top: Radius.circular(10)),
       ),
       child: Column(children: [
-        buildButtonRow(["AC", "<", "%", "/"], _isTheme),
+        buildButtonRow(["AC", "<", "DEL", "/"], _isTheme),
         buildButtonRow(["7", "8", "9", "x"], _isTheme),
         buildButtonRow(["4", "5", "6", "-"], _isTheme),
         buildButtonRow(["1", "2", "3", "+"], _isTheme),
-        buildButtonRow(["0", ".", "", "="], _isTheme),
+        buildButtonRow(["0", "%", ".", "="], _isTheme),
       ]),
     );
   }
@@ -99,11 +106,13 @@ class _MyAppState extends State<MyApp> {
                       isTheme: isTheme,
                       onclicked: () {
                         if (text == "<") {
-                          notifier.delete();
+                          notifier.reset();
                         } else if (text == "AC") {
                           notifier.clear();
                         } else if (text == "=") {
                           notifier.calculate();
+                        } else if (text == 'DEL') {
+                          notifier.delete();
                         } else {
                           ref.read(calculatorProvider.notifier).append(text);
                         }
@@ -113,16 +122,4 @@ class _MyAppState extends State<MyApp> {
       );
     });
   }
-
-
 }
-
-
-  
-
-
-
-
-
-
-

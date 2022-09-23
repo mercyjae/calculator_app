@@ -48,11 +48,12 @@ class ButtonWidget extends StatelessWidget {
     case "x":
     case "+":
     case "=":
-    
       return  isTheme?Colors.red: Colors.red.shade900;
     case "AC":
     case "<":
-      return isTheme?Colors.amber:  Colors.amber.shade500;
+      return isTheme?Colors.red:  Colors.red.shade900;
+    case "DEL":
+    return isTheme? Colors.amber:  Colors.amber.shade500;
     default:
       return isTheme ?Colors.black: Colors.white;
   }
